@@ -1,7 +1,7 @@
 from time import sleep
 from selenium import webdriver
 import requests
-from webdriver_manager.chrome import ChromeDriverManager
+from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.chrome.options import Options
 from bs4 import BeautifulSoup
 from threading import Lock
@@ -16,9 +16,14 @@ def s_print(*a, **b):
     with s_print_lock:
         print(*a, **b)
 
+service = Service('chromedriver.exe')
+service.start()
+
 chrome_options = Options()
 chrome_options.add_argument("--headless")
-driver = webdriver.Chrome(ChromeDriverManager().install(), options=chrome_options)
+chrome_options.add_argument("--log-level=OFF")
+chrome_options.add_experimental_option('excludeSwitches', ['enable-logging'])
+driver = webdriver.Remote(service.service_url, options=chrome_options)
 
 def crackhub(game):
     URL = f"https://crackhub.site/?s={game}"
@@ -157,28 +162,6 @@ def ova(game):
     
     s_print(f"Ova: {target_URL}")
 
-def rlsbb(game):
-    URL = f"https://search.rlsbb.ru/?s={game}"
-    target_URL = None
-    r = requests.get(URL)
-    soup = BeautifulSoup(r.content,"html.parser")
-    try:
-        target_URL =soup.find("a",{"rel":"bookmark"}).get('href')
-    except:
-        target_URL = "No Pirate Avalible"
-    
-    if target_URL != "No Pirate Avalible":
-        words = game.split()
-        is_word_in_url = True
-        for word in words:
-            if word not in target_URL:
-                is_word_in_url = False
-                break
-        if not is_word_in_url:
-            target_URL = f"{target_URL} (Likely Not Desired Game)"
-    
-    s_print(f"RLSBB: {target_URL}")
-
 def scnlog(game):
     URL = f"https://scnlog.me/search/{game}"
     target_URL = None
@@ -292,7 +275,7 @@ def gnarly(game):
     r = requests.get(URL)
     soup = BeautifulSoup(r.content,"html.parser")
     try:
-        target_URL =soup.find("h2",{"class":"loop-entry-title"}).a.get('href')
+        target_URL = soup.find("h2",{"class":"loop-entry-title"}).a.get('href')
     except:
         target_URL = "No Pirate Avalible"
     
@@ -308,27 +291,6 @@ def gnarly(game):
     
     s_print(f"Gnarly: {target_URL}")
 
-def scooter(game):
-    URL = f'https://scooter-repacks.site/?s={game}'
-    target_URL = None
-    r = requests.get(URL)
-    soup = BeautifulSoup(r.content,"html.parser")
-    try:
-        target_URL =soup.find("a",{"class":"continue-reading button bordered hide-on-mobile"}).get('href')
-    except:
-        target_URL = "No Pirate Avalible"
-    
-    if target_URL != "No Pirate Avalible":
-        words = game.split()
-        is_word_in_url = True
-        for word in words:
-            if word not in target_URL:
-                is_word_in_url = False
-                break
-        if not is_word_in_url:
-            target_URL = f"{target_URL} (Likely Not Desired Game)"
-    
-    s_print(f"Scooter: {target_URL}")
 
 ############
 ### MISC ###

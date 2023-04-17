@@ -1,24 +1,64 @@
 import checker as c
+from colorama import Fore
+from art import tprint
 import threading
 import sys
 
 if len(sys.argv) < 2:
     print(f"\nERROR: No Game Was Included")
-if len(sys.argv) > 2:
+    print("")
+elif len(sys.argv) > 2:
     print(f"\nERROR: Just Include Game Name\n")
+    print("")
 else:
-    funcs_names = ['crackhub', 'csrinru', 'darck', 'downloadha', 'elamigos', 'fitgirl', 'gload', 'gnarly', 'online_fix', 'ova', 'rlsbb', 'scene_crackhub', 'scnlog', 'scooter', 'steamrip']
-    funcs = [c.crackhub, c.csrinru, c.darck, c.downloadha, c.elamigos, c.fitgirl, c.gload, c.gnarly, c.online_fix, c.ova, c.rlsbb, c.scene_crackhub, c.scnlog, c.scooter, c.steamrip]
+    funcs_names = ['crackhub', 'csrinru', 'darck', 'downloadha', 'elamigos', 'fitgirl', 'gload', 'gnarly', 'online_fix', 'ova', 'scene_crackhub', 'scnlog', 'steamrip']
+    repack_funcs = [c.darck, c.elamigos, c.fitgirl, c.gnarly]
+    DDS_funcs = [c.crackhub, c.csrinru, c.downloadha, c.gload, c.ova, c.scnlog, c.steamrip, c.scene_crackhub]
+    misc_funcs = [c.online_fix]
 
     print("")
 
-    threads = []
+    threads_repack = []
+    threads_dds = []
+    threads_misc = []
 
-    for func in funcs:
+    print(Fore.RED)
+    tprint("Repacks")
+    print(Fore.RESET)
+
+    for func in repack_funcs:
         t = threading.Thread(target=func, args=(sys.argv[1],))
         t.daemon = True
-        threads.append(t)
-    for i in range(len(funcs)):
-        threads[i].start()
-    for i in range(len(funcs)):
-        threads[i].join() 
+        threads_repack.append(t)
+    for i in range(len(repack_funcs)):
+        threads_repack[i].start()
+    for i in range(len(repack_funcs)):
+        threads_repack[i].join() 
+
+    print(Fore.BLUE)
+    tprint("DDS")
+    print(Fore.RESET)
+
+    for func in DDS_funcs:
+        t = threading.Thread(target=func, args=(sys.argv[1],))
+        t.daemon = True
+        threads_dds.append(t)
+    for i in range(len(DDS_funcs)):
+        threads_dds[i].start()
+    for i in range(len(DDS_funcs)):
+        threads_dds[i].join() 
+    
+    print(Fore.GREEN)
+    tprint("MISC")
+    print(Fore.RESET)
+
+    for func in misc_funcs:
+        t = threading.Thread(target=func, args=(sys.argv[1],))
+        t.daemon = True
+        threads_misc.append(t)
+    for i in range(len(misc_funcs)):
+        threads_misc[i].start()
+    for i in range(len(misc_funcs)):
+        threads_misc[i].join() 
+
+print("")
