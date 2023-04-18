@@ -1,8 +1,34 @@
 import checker as c
-from colorama import Fore
 from art import tprint
 import threading
 import sys
+import os
+
+os.system('cls' if os.name == 'nt' else 'clear')
+
+repack_title = r"""
+  ____  _____ ____   _    ____ _  __
+ |  _ \| ____|  _ \ / \  / ___| |/ /
+ | |_) |  _| | |_) / _ \| |   | ' / 
+ |  _ <| |___|  __/ ___ \ |___| . \ 
+ |_| \_\_____|_| /_/   \_\____|_|\_\                                                          
+"""
+
+DDS_title = r"""
+  ____  ____  ____  
+ |  _ \|  _ \/ ___| 
+ | | | | | | \___ \ 
+ | |_| | |_| |___) |
+ |____/|____/|____/                     
+"""
+
+misc_title = r"""
+  __  __ ___ ____   ____ 
+ |  \/  |_ _/ ___| / ___|
+ | |\/| || |\___ \| |    
+ | |  | || | ___) | |___ 
+ |_|  |_|___|____/ \____|
+"""
 
 if len(sys.argv) < 2:
     print(f"\nERROR: No Game Was Included")
@@ -22,9 +48,7 @@ else:
     threads_dds = []
     threads_misc = []
 
-    print(Fore.RED)
-    tprint("Repacks")
-    print(Fore.RESET)
+    print(f"\n\033[1;31m{repack_title}\033[00m\n")
 
     for func in repack_funcs:
         t = threading.Thread(target=func, args=(sys.argv[1],))
@@ -35,9 +59,7 @@ else:
     for i in range(len(repack_funcs)):
         threads_repack[i].join() 
 
-    print(Fore.BLUE)
-    tprint("DDS")
-    print(Fore.RESET)
+    print(f"\n\033[1;34m{DDS_title}\033[00m\n") 
 
     for func in DDS_funcs:
         t = threading.Thread(target=func, args=(sys.argv[1],))
@@ -48,9 +70,7 @@ else:
     for i in range(len(DDS_funcs)):
         threads_dds[i].join() 
     
-    print(Fore.GREEN)
-    tprint("MISC")
-    print(Fore.RESET)
+    print(f"\n\033[1;32m{misc_title}\033[00m\n")
 
     for func in misc_funcs:
         t = threading.Thread(target=func, args=(sys.argv[1],))

@@ -5,6 +5,18 @@ from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.chrome.options import Options
 from bs4 import BeautifulSoup
 from threading import Lock
+import os
+import sys
+
+def resource_path(relative_path):
+    """ Get absolute path to resource, works for dev and for PyInstaller """
+    try:
+        # PyInstaller creates a temp folder and stores path in _MEIPASS
+        base_path = sys._MEIPASS
+    except Exception:
+        base_path = os.path.abspath(".")
+
+    return os.path.join(base_path, relative_path)
 
 ###########
 ### DDS ###
@@ -16,7 +28,7 @@ def s_print(*a, **b):
     with s_print_lock:
         print(*a, **b)
 
-service = Service('chromedriver.exe')
+service = Service(resource_path('chromedriver.exe'))
 service.start()
 
 chrome_options = Options()
