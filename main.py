@@ -30,13 +30,18 @@ misc_title = r"""
  |_|  |_|___|____/ \____|
 """
 
-if len(sys.argv) < 2:
-    print(f"\nERROR: No Game Was Included")
-    print("")
-elif len(sys.argv) > 2:
+if len(sys.argv) > 2:
     print(f"\nERROR: Just Include Game Name\n")
     print("")
-else:
+else: 
+    if len(sys.argv) < 2:
+        game_name = input("Enter The Name of Your Desired Game: ")
+        print("")
+    else:
+        game_name = sys.argv[1]
+    
+    os.system('cls' if os.name == 'nt' else 'clear')
+
     funcs_names = ['crackhub', 'csrinru', 'darck', 'downloadha', 'elamigos', 'fitgirl', 'gload', 'gnarly', 'online_fix', 'ova', 'scene_crackhub', 'scnlog', 'steamrip']
     repack_funcs = [c.darck, c.elamigos, c.fitgirl, c.gnarly]
     DDS_funcs = [c.crackhub, c.csrinru, c.downloadha, c.gload, c.ova, c.scnlog, c.steamrip, c.scene_crackhub]
@@ -51,7 +56,7 @@ else:
     print(f"\n\033[1;31m{repack_title}\033[00m\n")
 
     for func in repack_funcs:
-        t = threading.Thread(target=func, args=(sys.argv[1],))
+        t = threading.Thread(target=func, args=(game_name,))
         t.daemon = True
         threads_repack.append(t)
     for i in range(len(repack_funcs)):
@@ -62,7 +67,7 @@ else:
     print(f"\n\033[1;34m{DDS_title}\033[00m\n") 
 
     for func in DDS_funcs:
-        t = threading.Thread(target=func, args=(sys.argv[1],))
+        t = threading.Thread(target=func, args=(game_name,))
         t.daemon = True
         threads_dds.append(t)
     for i in range(len(DDS_funcs)):
@@ -73,7 +78,7 @@ else:
     print(f"\n\033[1;32m{misc_title}\033[00m\n")
 
     for func in misc_funcs:
-        t = threading.Thread(target=func, args=(sys.argv[1],))
+        t = threading.Thread(target=func, args=(game_name,))
         t.daemon = True
         threads_misc.append(t)
     for i in range(len(misc_funcs)):
