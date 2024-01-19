@@ -6,6 +6,28 @@ import os
 
 os.system('cls' if os.name == 'nt' else 'clear')
 
+startup_pic = r"""
+        ███████████████████████████
+        ███████▀▀▀░░░░░░░▀▀▀███████
+        ████▀░░░░░░░░░░░░░░░░░▀████
+        ███│░░░░░░░░░░░░░░░░░░░│███
+        ██▌│░░░░░░░░░░░░░░░░░░░│▐██
+        ██░└┐░░░░░░░░░░░░░░░░░┌┘░██
+        ██░░└┐░░░░░░░░░░░░░░░┌┘░░██
+        ██░░┌┘▄▄▄▄▄░░░░░▄▄▄▄▄└┐░░██
+        ██▌░│██████▌░░░▐██████│░▐██
+        ███░│▐███▀▀░░▄░░▀▀███▌│░███
+        ██▀─┘░░░░░░░▐█▌░░░░░░░└─▀██
+        ██▄░░░▄▄▄▓░░▀█▀░░▓▄▄▄░░░▄██
+        ████▄─┘██▌░░░░░░░▐██└─▄████
+        █████░░▐█─┬┬┬┬┬┬┬─█▌░░█████
+        ████▌░░░▀┬┼┼┼┼┼┼┼┬▀░░░▐████
+        █████▄░░░└┴┴┴┴┴┴┴┘░░░▄█████
+        ███████▄░░░░░░░░░░░▄███████
+        ██████████▄▄▄▄▄▄▄██████████
+        ███████████████████████████
+""".center(50)
+
 repack_title = r"""
   ____  _____ ____   _    ____ _  __
  |  _ \| ____|  _ \ / \  / ___| |/ /
@@ -35,16 +57,18 @@ if len(sys.argv) > 2:
     print("")
 else: 
     if len(sys.argv) < 2:
-        game_name = input("Enter The Name of Your Desired Game: ")
+        print(startup_pic)
+        print('\n')
+        game_name = input("     Enter The Name of Your Desired Game: ")
         print("")
     else:
         game_name = sys.argv[1]
     
     os.system('cls' if os.name == 'nt' else 'clear')
 
-    funcs_names = ['crackhub', 'csrinru', 'darck', 'downloadha', 'elamigos', 'fitgirl', 'gload', 'gnarly', 'online_fix', 'ova', 'scene_crackhub', 'scnlog', 'steamrip']
-    repack_funcs = [c.darck, c.elamigos, c.fitgirl, c.gnarly]
-    DDS_funcs = [c.crackhub, c.csrinru, c.downloadha, c.gload, c.ova, c.scnlog, c.steamrip, c.scene_crackhub]
+    funcs_names = ['csrinru', 'darck', 'downloadha', 'elamigos', 'fitgirl', 'gload', 'online_fix', 'ova', 'steamrip']
+    repack_funcs = [c.darck, c.elamigos, c.fitgirl, c.dodi]
+    DDS_funcs = [c.csrinru, c.downloadha, c.gload, c.ova, c.steamrip, c.scnlog]
     misc_funcs = [c.online_fix]
 
     print("")

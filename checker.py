@@ -1,3 +1,5 @@
+### Fix Traceback Errors, Possible Fix: https://stackoverflow.com/questions/30405867/how-to-get-python-requests-to-trust-a-self-signed-ssl-certificate ###
+
 from time import sleep
 from selenium import webdriver
 import requests
@@ -7,6 +9,10 @@ from bs4 import BeautifulSoup
 from threading import Lock
 import os
 import sys
+from selenium.webdriver.chrome.service import Service as ChromeService
+from webdriver_manager.chrome import ChromeDriverManager
+from requests.adapters import HTTPAdapter
+from urllib3.util.retry import Retry
 
 def resource_path(relative_path):
     """ Get absolute path to resource, works for dev and for PyInstaller """
@@ -28,57 +34,19 @@ def s_print(*a, **b):
     with s_print_lock:
         print(*a, **b)
 
-service = Service(resource_path('chromedriver.exe'))
-service.start()
-
 chrome_options = Options()
 chrome_options.add_argument("--headless")
-chrome_options.add_argument("--log-level=OFF")
+chrome_options.add_argument("--log-level=1")
 chrome_options.add_experimental_option('excludeSwitches', ['enable-logging'])
-driver = webdriver.Remote(service.service_url, options=chrome_options)
+driver = webdriver.Chrome(service=ChromeService(ChromeDriverManager().install()), options=chrome_options)
 
-def crackhub(game):
-    URL = f"https://crackhub.site/?s={game}"
-    target_URL = None
-    r = requests.get(URL)
-    soup = BeautifulSoup(r.content,"html.parser")
-    try:
-        target_URL =soup.find("a",{"rel":"bookmark"}).get('href')
-    except:
-        target_URL = "No Pirate Avalible"
-    
-    if target_URL != "No Pirate Avalible":
-        words = game.split()
-        is_word_in_url = True
-        for word in words:
-            if word not in target_URL:
-                is_word_in_url = False
-                break
-        if not is_word_in_url:
-            target_URL = f"{target_URL} (Likely Not Desired Game)"
-    
-    s_print(f"CrackHub: {target_URL}")
+# Create Session to Limit Website Refrshes
+session = requests.Session()
+retry = Retry(connect=3, backoff_factor=0.5)
+adapter = HTTPAdapter(max_retries=retry)
+session.mount('http://', adapter)
+session.mount('https://', adapter)
 
-def scene_crackhub(game):
-    URL = f"https://scene.crackhub.site/?s={game}"
-    r = requests.get(URL)
-    soup = BeautifulSoup(r.content,"html.parser")
-    try:
-        target_URL = soup.find("a",{"rel":"bookmark"}).get('href')
-    except:
-        target_URL = "No Pirate Avalible"
-    
-    if target_URL != "No Pirate Avalible":
-        words = game.split()
-        is_word_in_url = True
-        for word in words:
-            if word not in target_URL:
-                is_word_in_url = False
-                break
-        if not is_word_in_url:
-            target_URL = f"{target_URL} (Likely Not Desired Game)"
-    
-    s_print(f"Scene CrackHub: {target_URL}")
 
 # Selenium (make sure to include chrome_options.add_argument("--headless"))
 def csrinru(game):
@@ -111,7 +79,7 @@ def csrinru(game):
 def downloadha(game):
     URL = f"https://www.downloadha.com/?s={game}"
     target_URL = None
-    r = requests.get(URL)
+    r = session.get(URL)
     soup = BeautifulSoup(r.content,"html.parser")
     try:
         target_URL =soup.find("a",{"rel":"bookmark"}).get('href')
@@ -133,7 +101,7 @@ def downloadha(game):
 def gload(game):
     URL = f"https://gload.to/?s={game}"
     target_URL = None
-    r = requests.get(URL)
+    r = session.get(URL)
     soup = BeautifulSoup(r.content,"html.parser")
     try:
         target_URL =soup.find("a",{"style":"position: absolute; top: 0; right: 0; bottom: 0; left: 0; width: 100%; height: 100%;"}).get('href')
@@ -155,7 +123,7 @@ def gload(game):
 def ova(game):
     URL = f"https://www.ovagames.com/?s={game}"
     target_URL = None
-    r = requests.get(URL)
+    r = session.get(URL)
     soup = BeautifulSoup(r.content,"html.parser")
     try:
         target_URL =soup.find("a",{"rel":"bookmark"}).get('href')
@@ -175,12 +143,12 @@ def ova(game):
     s_print(f"Ova: {target_URL}")
 
 def scnlog(game):
-    URL = f"https://scnlog.me/search/{game}"
+    URL = f"https://scnlog.me/?s={game}"
     target_URL = None
     r = requests.get(URL)
     soup = BeautifulSoup(r.content,"html.parser")
     try:
-        target_URL =soup.find("a",{"rel":"bookmark"}).get('href')
+        target_URL = soup.find("a",{"rel":"bookmark"}).get('href')
     except:
         target_URL = "No Pirate Avalible"
     
@@ -199,7 +167,7 @@ def scnlog(game):
 def steamrip(game):
     URL = f"https://steamrip.com/?s={game}"
     target_URL = None
-    r = requests.get(URL)
+    r = session.get(URL)
     soup = BeautifulSoup(r.content,"html.parser")
     try:
         target_URL =soup.find("a",{"class":"all-over-thumb-link"}).get('href')
@@ -225,10 +193,32 @@ def steamrip(game):
 ### Repacks ###
 ###############
 
+def dodi(game):
+    URL = f"https://dodi-repacks.site/?s={game}"
+    target_URL = None
+    r = session.get(URL)
+    soup = BeautifulSoup(r.content,"html.parser")
+    try:
+        target_URL = soup.find("a",{"rel":"bookmark"}).get('href')
+    except:
+        target_URL = "No Pirate Avalible"
+    
+    if target_URL != "No Pirate Avalible":
+        words = game.split()
+        is_word_in_url = True
+        for word in words:
+            if word not in target_URL:
+                is_word_in_url = False
+                break
+        if not is_word_in_url:
+            target_URL = f"{target_URL} (Likely Not Desired Game)"
+    
+    s_print(f"Dodi: {target_URL}")
+
 def darck(game):
     URL = f"https://darckrepacks.com/search/?q={game}&quick=1"
     target_URL = None
-    r = requests.get(URL)
+    r = session.get(URL)
     soup = BeautifulSoup(r.content,"html.parser")
     try:
         target_URL =soup.find("a",{"data-linktype":"link"}).get('href')
@@ -250,7 +240,7 @@ def darck(game):
 def elamigos(game):
     URL = 'https://elamigos.site/'
     target_URL = "No Pirate Avalible"
-    r = requests.get(URL)
+    r = session.get(URL)
     soup = BeautifulSoup(r.content,"html.parser")
     games = soup.find_all("h3")
     for element in games:
@@ -262,7 +252,7 @@ def elamigos(game):
 def fitgirl(game):
     URL = f'https://fitgirl-repacks.site/?s={game}'
     target_URL = None
-    r = requests.get(URL)
+    r = session.get(URL)
     soup = BeautifulSoup(r.content,"html.parser")
     try:
         target_URL =soup.find("a",{"rel":"bookmark"}).get('href')
@@ -281,28 +271,6 @@ def fitgirl(game):
     
     s_print(f"FitGirl: {target_URL}")
 
-def gnarly(game):
-    URL = f"https://www.gnarly-repacks.site/?s={game}"
-    target_URL = None
-    r = requests.get(URL)
-    soup = BeautifulSoup(r.content,"html.parser")
-    try:
-        target_URL = soup.find("h2",{"class":"loop-entry-title"}).a.get('href')
-    except:
-        target_URL = "No Pirate Avalible"
-    
-    if target_URL != "No Pirate Avalible":
-        words = game.split()
-        is_word_in_url = True
-        for word in words:
-            if word not in target_URL:
-                is_word_in_url = False
-                break
-        if not is_word_in_url:
-            target_URL = f"{target_URL} (Likely Not Desired Game)"
-    
-    s_print(f"Gnarly: {target_URL}")
-
 
 ############
 ### MISC ###
@@ -311,7 +279,7 @@ def gnarly(game):
 def online_fix(game):
     URL = f'https://online-fix.me/index.php?do=search&subaction=search&story={game}'
     target_URL = None
-    r = requests.get(URL)
+    r = session.get(URL)
     soup = BeautifulSoup(r.content,"html.parser")
     try:
         target_URL =soup.find("a",{"class":"big-link"}).get('href')
