@@ -215,28 +215,6 @@ def dodi(game):
     
     s_print(f"Dodi: {target_URL}")
 
-def darck(game):
-    URL = f"https://darckrepacks.com/search/?q={game}&quick=1"
-    target_URL = None
-    r = session.get(URL)
-    soup = BeautifulSoup(r.content,"html.parser")
-    try:
-        target_URL =soup.find("a",{"data-linktype":"link"}).get('href')
-    except:
-        target_URL = "No Pirate Avalible"
-    
-    if target_URL != "No Pirate Avalible":
-        words = game.split()
-        is_word_in_url = True
-        for word in words:
-            if word not in target_URL:
-                is_word_in_url = False
-                break
-        if not is_word_in_url:
-            target_URL = f"{target_URL} (Likely Not Desired Game)"
-    
-    s_print(f"Darck: {target_URL}")
-
 def elamigos(game):
     URL = 'https://elamigos.site/'
     target_URL = "No Pirate Avalible"

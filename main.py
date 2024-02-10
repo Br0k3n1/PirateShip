@@ -67,7 +67,7 @@ else:
     os.system('cls' if os.name == 'nt' else 'clear')
 
     funcs_names = ['csrinru', 'darck', 'downloadha', 'elamigos', 'fitgirl', 'gload', 'online_fix', 'ova', 'steamrip']
-    repack_funcs = [c.darck, c.elamigos, c.fitgirl, c.dodi]
+    repack_funcs = [c.elamigos, c.fitgirl, c.dodi]
     DDS_funcs = [c.csrinru, c.downloadha, c.gload, c.ova, c.steamrip, c.scnlog]
     misc_funcs = [c.online_fix]
 
