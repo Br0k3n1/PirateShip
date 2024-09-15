@@ -114,7 +114,7 @@ while running:
 
     print("")
 
-    repeat = input("\nDo You Wish To Find Another Game (Y or N): ")
+    repeat = input("\n\n\n\033[1;35mDo You Wish To Find Another Game (Y or N): \033[00m")
     if repeat.lower() == 'n':
         running = False
     else:
