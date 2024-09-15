@@ -34,11 +34,15 @@ def s_print(*a, **b):
     with s_print_lock:
         print(*a, **b)
 
+chrome_install = ChromeDriverManager().install()
+folder = os.path.dirname(chrome_install)
+chromedriver_path = os.path.join(folder, "chromedriver.exe")
+
 chrome_options = Options()
 chrome_options.add_argument("--headless")
 chrome_options.add_argument("--log-level=1")
 chrome_options.add_experimental_option('excludeSwitches', ['enable-logging'])
-driver = webdriver.Chrome(service=ChromeService(ChromeDriverManager().install()), options=chrome_options)
+driver = webdriver.Chrome(service=ChromeService(chromedriver_path), options=chrome_options)
 
 # Create Session to Limit Website Refrshes
 session = requests.Session()
